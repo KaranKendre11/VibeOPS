@@ -1,0 +1,305 @@
+{
+  "hasGCPAccess": true,
+  "lastRefresh": "2025-01-27T10:30:00Z",
+  "applicationStacks": [
+    {
+      "id": "webapp-prod",
+      "name": "Web Application - Production",
+      "description": "Main production web application stack",
+      "labels": {
+        "app": "webapp",
+        "environment": "production",
+        "team": "platform"
+      },
+      "primary_service": "cloudrun-api-prod",
+      "total_cost": 847.50,
+      "health_status": "healthy",
+      "vpc": "vpc-custom-prod",
+      "subnets": ["subnet-us-central1-a", "subnet-us-central1-b"],
+      "services": [
+        {
+          "id": "cloudrun-api-prod",
+          "name": "API Service",
+          "type": "cloud-run",
+          "status": "running",
+          "region": "us-central1",
+          "project_id": "demo-project",
+          "description": "Main API service running on Cloud Run",
+          "arn": "projects/demo-project/locations/us-central1/services/api-service",
+          "labels": {
+            "app": "webapp",
+            "environment": "production",
+            "component": "api"
+          },
+          "connections": ["cloudsql-postgres-prod", "memorystore-redis-cache"],
+          "health_status": "healthy",
+          "configuration": {
+            "memory": "512Mi",
+            "cpu": "1",
+            "min_instances": 1,
+            "max_instances": 10,
+            "port": 8080
+          },
+          "cost_estimate": {
+            "monthly": 35.20,
+            "breakdown": "Cloud Run: CPU + Memory usage"
+          },
+          "metrics": {
+            "requests": 25430,
+            "latency": 120,
+            "errors": 0.01
+          },
+          "last_updated": "2025-01-27T10:25:00Z"
+        },
+        {
+          "id": "cloudsql-postgres-prod",
+          "name": "PostgreSQL Database",
+          "type": "cloud-sql",
+          "status": "running",
+          "region": "us-central1",
+          "project_id": "demo-project",
+          "description": "Main PostgreSQL database instance",
+          "arn": "projects/demo-project/instances/postgres-prod",
+          "labels": {
+            "app": "webapp",
+            "environment": "production",
+            "component": "database"
+          },
+          "connections": [],
+          "health_status": "healthy",
+          "configuration": {
+            "tier": "db-n1-standard-1",
+            "storage_size": 100,
+            "backup_enabled": true,
+            "ha_enabled": true
+          },
+          "cost_estimate": {
+            "monthly": 156.00,
+            "breakdown": "db-n1-standard-1 + 100GB storage + HA"
+          },
+          "metrics": {
+            "cpu": 35,
+            "memory": 62,
+            "connections": 25
+          },
+          "last_updated": "2025-01-27T10:25:00Z"
+        },
+        {
+          "id": "memorystore-redis-cache",
+          "name": "Redis Cache",
+          "type": "memorystore",
+          "status": "running",
+          "region": "us-central1",
+          "project_id": "demo-project",
+          "description": "Redis instance for session caching",
+          "arn": "projects/demo-project/locations/us-central1/instances/redis-cache",
+          "labels": {
+            "app": "webapp",
+            "environment": "production",
+            "component": "cache"
+          },
+          "connections": [],
+          "health_status": "healthy",
+          "configuration": {
+            "tier": "STANDARD_HA",
+            "memory": "5GB",
+            "replicas": 1
+          },
+          "cost_estimate": {
+            "monthly": 89.50,
+            "breakdown": "Standard HA tier: 5GB memory"
+          },
+          "metrics": {
+            "cpu": 12,
+            "memory": 45,
+            "requests": 15000
+          },
+          "last_updated": "2025-01-27T10:25:00Z"
+        },
+        {
+          "id": "storage-bucket-uploads",
+          "name": "User Uploads Bucket",
+          "type": "cloud-storage",
+          "status": "running",
+          "region": "us-central1",
+          "project_id": "demo-project",
+          "description": "Cloud Storage bucket for user-uploaded files",
+          "arn": "gs://webapp-uploads-prod",
+          "labels": {
+            "app": "webapp",
+            "environment": "production",
+            "component": "storage"
+          },
+          "connections": [],
+          "health_status": "healthy",
+          "configuration": {
+            "storage_class": "STANDARD",
+            "versioning": true,
+            "lifecycle_rules": 2
+          },
+          "cost_estimate": {
+            "monthly": 12.80,
+            "breakdown": "Storage + requests + egress"
+          },
+          "metrics": {
+            "requests": 8500
+          },
+          "last_updated": "2025-01-27T10:25:00Z"
+        }
+      ]
+    },
+    {
+      "id": "ml-pipeline",
+      "name": "ML Training Pipeline",
+      "description": "Machine learning model training infrastructure",
+      "labels": {
+        "app": "ml-pipeline",
+        "environment": "production",
+        "team": "data-science"
+      },
+      "primary_service": "cloud-functions-processor",
+      "total_cost": 234.75,
+      "health_status": "warning",
+      "vpc": "vpc-ml-prod",
+      "subnets": ["subnet-us-west1-a"],
+      "services": [
+        {
+          "id": "cloud-functions-processor",
+          "name": "Data Processor",
+          "type": "cloud-functions",
+          "status": "running",
+          "region": "us-west1",
+          "project_id": "demo-project",
+          "description": "Processes incoming training data",
+          "arn": "projects/demo-project/locations/us-west1/functions/data-processor",
+          "labels": {
+            "app": "ml-pipeline",
+            "environment": "production",
+            "component": "processor"
+          },
+          "connections": ["storage-bucket-training-data", "firestore-metadata"],
+          "health_status": "warning",
+          "configuration": {
+            "memory": "2GB",
+            "timeout": 540,
+            "runtime": "python311"
+          },
+          "cost_estimate": {
+            "monthly": 45.20,
+            "breakdown": "Invocations + compute time"
+          },
+          "metrics": {
+            "requests": 75000,
+            "errors": 2.5,
+            "latency": 3200
+          },
+          "last_updated": "2025-01-27T10:25:00Z"
+        },
+        {
+          "id": "storage-bucket-training-data",
+          "name": "Training Data Lake",
+          "type": "cloud-storage",
+          "status": "running",
+          "region": "us-west1",
+          "project_id": "demo-project",
+          "description": "Storage bucket for ML training datasets",
+          "arn": "gs://ml-training-data-prod",
+          "labels": {
+            "app": "ml-pipeline",
+            "environment": "production",
+            "component": "storage"
+          },
+          "connections": [],
+          "health_status": "healthy",
+          "configuration": {
+            "storage_class": "STANDARD",
+            "versioning": false,
+            "lifecycle_rules": 1
+          },
+          "cost_estimate": {
+            "monthly": 156.80,
+            "breakdown": "Storage + requests"
+          },
+          "metrics": {
+            "requests": 35000
+          },
+          "last_updated": "2025-01-27T10:25:00Z"
+        },
+        {
+          "id": "firestore-metadata",
+          "name": "Metadata Store",
+          "type": "firestore",
+          "status": "running",
+          "region": "us-west1",
+          "project_id": "demo-project",
+          "description": "Firestore for experiment metadata",
+          "arn": "projects/demo-project/databases/(default)",
+          "labels": {
+            "app": "ml-pipeline",
+            "environment": "production",
+            "component": "database"
+          },
+          "connections": [],
+          "health_status": "healthy",
+          "configuration": {
+            "mode": "DATASTORE_MODE"
+          },
+          "cost_estimate": {
+            "monthly": 32.75,
+            "breakdown": "Reads + writes + storage"
+          },
+          "metrics": {
+            "requests": 125000
+          },
+          "last_updated": "2025-01-27T10:25:00Z"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "api-to-db",
+      "source": "cloudrun-api-prod",
+      "target": "cloudsql-postgres-prod",
+      "connection_type": "data",
+      "protocol": "PostgreSQL",
+      "port": 5432,
+      "description": "API to database connection"
+    },
+    {
+      "id": "api-to-cache",
+      "source": "cloudrun-api-prod",
+      "target": "memorystore-redis-cache",
+      "connection_type": "data",
+      "protocol": "Redis",
+      "port": 6379,
+      "description": "API to cache connection"
+    },
+    {
+      "id": "api-to-storage",
+      "source": "cloudrun-api-prod",
+      "target": "storage-bucket-uploads",
+      "connection_type": "api",
+      "description": "API to storage bucket"
+    },
+    {
+      "id": "function-to-storage",
+      "source": "cloud-functions-processor",
+      "target": "storage-bucket-training-data",
+      "connection_type": "api",
+      "description": "Function reads training data"
+    },
+    {
+      "id": "function-to-firestore",
+      "source": "cloud-functions-processor",
+      "target": "firestore-metadata",
+      "connection_type": "api",
+      "description": "Function writes metadata"
+    }
+  ],
+  "totalCost": 1082.25,
+  "costBreakdown": {
+    "Web Application - Production": 847.50,
+    "ML Training Pipeline": 234.75
+  }
+}

@@ -1,0 +1,165 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(0, 0, 0, 0.87);
+  background-color: #fafafa;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Markdown styles for chat messages */
+.markdown {
+  @apply text-sm leading-relaxed;
+}
+
+.markdown h1 {
+  @apply text-2xl font-bold mt-4 mb-2;
+}
+
+.markdown h2 {
+  @apply text-xl font-bold mt-3 mb-2;
+}
+
+.markdown h3 {
+  @apply text-lg font-semibold mt-2 mb-1;
+}
+
+.markdown p {
+  @apply mb-2;
+}
+
+.markdown ul {
+  @apply list-disc list-inside mb-2;
+}
+
+.markdown ol {
+  @apply list-decimal list-inside mb-2;
+}
+
+.markdown code {
+  @apply bg-gray-100 px-1 py-0.5 rounded text-xs font-mono;
+}
+
+.markdown pre {
+  @apply bg-gray-100 p-3 rounded-lg overflow-x-auto mb-2;
+}
+
+.markdown pre code {
+  @apply bg-transparent p-0;
+}
+
+.markdown strong {
+  @apply font-semibold;
+}
+
+.markdown em {
+  @apply italic;
+}
+
+.markdown a {
+  @apply text-blue-600 hover:underline;
+}
+
+/* Animation utilities */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+  background-size: 1000px 100%;
+}
+
+/* Loading spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Pulse animation for status indicators */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

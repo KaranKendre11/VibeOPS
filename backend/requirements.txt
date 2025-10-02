@@ -1,0 +1,28 @@
+# FastAPI and server
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+python-multipart==0.0.6
+sse-starlette==1.8.2
+
+# LangChain and LangGraph
+# Removed fixed versions to allow pip to resolve compatible versions
+langchain
+langchain-google-vertexai
+langgraph
+langchain-core
+
+# Google Cloud
+# Adjusted google-cloud-aiplatform version to resolve dependency conflict with langchain-google-vertexai
+google-cloud-aiplatform>=1.42.1,<2.0.0
+google-cloud-storage==2.14.0
+google-cloud-compute==1.15.0
+google-auth==2.27.0
+
+# Pydantic
+pydantic==2.6.0
+pydantic-settings==2.1.0
+
+# Utilities
+python-dotenv==1.0.0
+aiofiles==23.2.1
+httpx==0.26.0
